@@ -41,6 +41,8 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   mosquitto:
     driver: ${VOLUMES_DRIVER}
+  mariadb-data-nvol:
+  nginx-log-nvol:
 
 services:
 
@@ -231,7 +233,7 @@ services:
           - CHANGE_SOURCE=${CHANGE_SOURCE}
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-        - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+        - nginx-log-nvol:/var/log/nginx
         - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
         - ${NGINX_SSL_PATH}:/etc/nginx/ssl
       ports:
@@ -360,7 +362,7 @@ services:
     mariadb:
       build: ./mariadb
       volumes:
-        - ${DATA_PATH_HOST}/mariadb:/var/lib/mysql
+        - mariadb-data-nvol:/var/lib/mysql
         - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
       ports:
         - "${MARIADB_PORT}:3306"
